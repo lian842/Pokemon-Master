@@ -138,10 +138,12 @@ int main(){
     cin >> pk1;
     cout << "Choose a Pokemon(0~4): " ;
     cin >> pk2;
+
     if (pk1 == pk2){
         cout << "You have to choose Pokemons different from each other." << endl;
         return 0;   // terminate the battle when the user chose the same Pokemon
     }
+
     cout << endl;
     battle (Pokemons[pk1], Pokemons[pk2]);  // run the battle
     return 0;
@@ -166,45 +168,45 @@ pair <int, int> damageeff(int a, int b){
 void battle (Pokemon &pkm1, Pokemon &pkm2){
     int i = 1;
     int j;
-    while (pkm1.HP > 0 && pkm2.HP > 0){ // battle until one of the Pokemon's HP == 0
+    while (pkm1.HP > 0 && pkm2.HP > 0){ // battle until one of the Pokemon's HP <= 0
         battlePage(pkm1, pkm2, i);
         cout << "Choose a skill (0~3): ";
         cin >> j;
-        if (i % 2 == 1){
-            pkm1.latestskill = pkm1.skills[j].skillname;
-            int a = Types[pkm1.skills[j].skillname];
+        if (i % 2 == 1){    // when pkm1 turn
+            pkm1.latestskill = pkm1.skills[j].skillname;    // change the latest skill to show in battle page
+            int a = Types[pkm1.skills[j].skilltype];        
             int b = Types[pkm2.type];
-            pair <int, int> result = damageeff(a, b);
+            pair <int, int> result = damageeff(a, b);       // check the compatibility of the attack
             int c = result.first;
             int d = result.second;
-            pkm1.effectiveness = d;
-            if (pkm1.skills[j].currenttry == 0){
+            pkm1.effectiveness = d;                         // show the effectiveness
+            if (pkm1.skills[j].currenttry == 0){    // when the skill ran out of try 
                 cout << pkm1.name <<" failed to perform " << pkm1.skills[j].skillname << "." << endl;
             } else {
                 pkm1.skills[j].currenttry -= 1;
-                pkm2.HP -= pkm1.skills[j].damage - c;        
+                pkm2.HP -= (pkm1.skills[j].damage + c);     // change the HP according to effectiveness       
                 cout << pkm1.name << " used " << pkm1.skills[j].skillname <<"." << endl;
             }
-        } else {
-            pkm2.latestskill = pkm2.skills[j].skillname;
-            int a = Types[pkm2.skills[j].skillname];
+        } else {    // when pkm2 turn
+            pkm2.latestskill = pkm2.skills[j].skillname;     // change the latest skill to show in battle page
+            int a = Types[pkm2.skills[j].skilltype];
             int b = Types[pkm1.type];
-            pair <int, int> result = damageeff(a, b);
+            pair <int, int> result = damageeff(a, b);        // check the compatibility of the attack
             int c = result.first;
             int d = result.second;
-            pkm2.effectiveness = d;
+            pkm2.effectiveness = d;                          // show the effectiveness
             if (pkm2.skills[j].currenttry == 0){
-                cout << pkm2.name <<" failed to perform " << pkm2.skills[j].skillname << "." << endl;
+                cout << pkm2.name <<" failed to perform " << pkm2.skills[j].skillname << "." << endl;    // when the skill ran out of try 
             } else {
                 pkm2.skills[j].currenttry -= 1;  
                 cout << pkm2.name << " used " << pkm2.skills[j].skillname <<"." << endl;
-                pkm1.HP -= pkm2.skills[j].damage - c;
+                pkm1.HP -= (pkm2.skills[j].damage + c);      // change the HP according to effectiveness
             }
         }
         i += 1;
     }
     cout << "===============================================================" << endl;
-    if (pkm1.HP <= 0){
+    if (pkm1.HP <= 0){      // show the result
         cout << "Match Result: " << pkm2.name << " defeats " << pkm1.name;
     } else {
         cout << "Match Result: " << pkm1.name << " defeats " << pkm2.name;
@@ -217,20 +219,19 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
 
 void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {    //since 63 == 1 + 60 + 1 + 60 + 1, we use setw to match the condition
     cout << "+-------------------------------------------------------------+"<< endl;
-    cout << "| 2023149003 OOP Computer Science                             |"<< endl;
+    cout << "| 2024-02 Object-Oriented Programming Pokemon Master          |"<< endl;
     cout << "+------------------------------+------------------------------+"<< endl;
-    if (i%2 == 1){
+    if (i%2 == 1){      // show the turn of the battle using i
         cout << "|" << setw(30) << left <<  pkm1.name + " (*)" << "|" << setw(30) << left << pkm2.name << "|" << endl; 
     } else {
         cout << "|" << setw(30) << left <<  pkm1.name << "|" << setw(30) << left << pkm2.name + " (*)" << "|" << endl; 
     }
-    cout << "|" << setw(30) << left <<  pkm1.name + " (*)" << "|" << setw(30) << left << pkm2.name << "|" << endl; 
     cout << "|" << setw(30) << left << "Type: " + pkm1.type << "|" << setw(30) << left << "Type: " + pkm2.type << "|" <<endl;
     cout << "|" << setw(30) << left << "HP: " << pkm1.HP << "|" << setw(30) << left << "HP: " << pkm2.HP << "|" <<endl;
     cout << "+------------------------------+------------------------------+"<< endl;
     cout << "|" << setw(30) << left << "Latest skill: " + pkm1.latestskill << "|" << setw(30) << left << "Latest Skill: " + pkm2.latestskill << "|" <<endl;
     cout << "|" << setw(30) << left;
-    if (pkm1.effectiveness == 1){
+    if (pkm1.effectiveness == 1){       // show the effectiveness of the previous attack
         cout << " It was super effective";
     } else if (pkm1.effectiveness == 0){
         cout << " It was effective";
@@ -247,7 +248,7 @@ void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {    //since 63 == 1 + 60 
     }
     cout << "|" << endl;
     cout << "+------------------------------+------------------------------+"<< endl;
-    for (int i = 0; i < 4; i++){
+    for (int i = 0; i < 4; i++){    // show the current stat of the skills
         cout << "|" << setw(30) << left << " (" +to_string(i)+ ")" << pkm1.skills[i].skillname << "|" << setw(30) << left << " (" +to_string(i)+ ")" << pkm1.skills[i].skillname << "|" << endl;
         cout << "|" << setw(30) << left << "     - Type: " << pkm1.skills[i].skilltype << "|" << setw(30) << left << "     - Type: " << pkm2.skills[i].skilltype << "|" << endl;
         cout << "|" << setw(30) << left << "     - Damage: " << pkm1.skills[i].damage << "|" << setw(30) << left << "     - Type: " << pkm2.skills[i].damage << "|" << endl;
