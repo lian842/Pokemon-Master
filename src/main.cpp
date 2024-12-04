@@ -17,6 +17,9 @@ int typeeffective [6][6] ={ // when super effective :1, effective :0, not very e
 };
 
 
+string Pokemons [5] = {"Pikachu", "Dratini", "Eevee", "Charmander", "Palkia"};
+
+
 
 struct Pokemon {
     string name;
@@ -33,59 +36,66 @@ struct Pokestat {   // make struct to set the skillname, skilltype, damage, maxt
     string skilltype;
     int damage;
     int maxtry;
+    int currenttry;
 };
 
 Pokemon Pikachu = {"Pikachu", "Electric", "-", 2, 35,   // Pikachu stat
     { 
-    {"Takcle", "Normal", 4, 5},
-    {"Grass Knot", "Grass", 8, 5},
-    {"Thunderbolt", "Electric", 10, 5},
-    {"Megabolt", "Electric", 15, 3}
+    {"Takcle", "Normal", 4, 5, 5},
+    {"Grass Knot", "Grass", 8, 5, 5},
+    {"Thunderbolt", "Electric", 10, 5, 5},
+    {"Megabolt", "Electric", 15, 3, 3}
     }
 };
 
 Pokemon Dratini = {"Dratini", "Water", "-", 2, 41,  // Dratini stat
     {
-    {"Wrap", "Normal", 4, 10},
-    {"Aqua Tail", "Water", 3, 5},
-    {"Water Pulse", "Water", 13, 2},
-    {"Hyper Beam", "Normal", 20, 1}
+    {"Wrap", "Normal", 4, 10, 10},
+    {"Aqua Tail", "Water", 3, 5, 5},
+    {"Water Pulse", "Water", 13, 2, 2},
+    {"Hyper Beam", "Normal", 20, 1, 1}
     }
 };
 
 Pokemon Eevee = {"Eevee", "Normal", "-", 2, 55,     // Eevee stat
     {
-    {"Takcle", "Normal", 4, 5},
-    {"Sand Attack", "Ground", 8, 3},
-    {"Bite", "Normal", 12, 3},
-    {"Rain Dance", "Water", 15, 1}  
+    {"Takcle", "Normal", 4, 5, 5},
+    {"Sand Attack", "Ground", 8, 3, 3},
+    {"Bite", "Normal", 12, 3, 3},
+    {"Rain Dance", "Water", 15, 1, 1}  
     }
 };
 
 Pokemon Charmander = {"Charmander", "Fire", "-", 2, 39, // Charmander stat 
     {
-    {"Takcle", "Normal", 4, 5},
-    {"Flamehrower", "Fire", 11, 5},
-    {"Dig", "Ground", 7, 5},
-    {"Heat Wave", "Fire", 14, 5}
+    {"Takcle", "Normal", 4, 5, 5},
+    {"Flamehrower", "Fire", 11, 5, 5},
+    {"Dig", "Ground", 7, 5, 5},
+    {"Heat Wave", "Fire", 14, 5, 5}
     }
 };
 
 Pokemon Palkia = {"Palkia", "Water", "-", 2, 90,    // Palkia stat
     {
-    {"Hydro Pump", "Water", 12, 10},
-    {"Earth Power", "Ground", 15, 10},
-    {"Surf", "Water", 13, 10},
-    {"Spatial Rend", "Normal", 30, 10}
+    {"Hydro Pump", "Water", 12, 10, 10},
+    {"Earth Power", "Ground", 15, 10, 10},
+    {"Surf", "Water", 13, 10, 10},
+    {"Spatial Rend", "Normal", 30, 10, 10}
     }
 };
 
 
 void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {  
-     // prints out the Battle Page 
+    // prints out the Battle Page 
     // gets two Pokemon and one int
     // int to check who is in the turn
     // no return, made the function to only print out the Battle Page
+}
+
+void battle (Pokemon &pkm1, Pokemon &pkm2){
+    // progress battle
+    // gets two Pokemon from user input int
+    // no return
 }
 
 
@@ -96,8 +106,19 @@ void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {
 
 
 int main(){
+    int pk1, pk2;
+    cout << "Choose a Pokemon(0~4): " << endl;
+    cin >> pk1;
+    cout << "Choose a Pokemon(0~4): " << endl;
+    cin >> pk2;
+    if (pk1 == pk2){
+        cout << "You have to choose Pokemons different from each other." << endl;
+        return 0;
+    }
     return 0;
 }
+
+
 
 
 
@@ -133,4 +154,17 @@ void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {    //since 63 == 1 + 60 
     }
     cout << "|" << endl;
     cout << "+------------------------------+------------------------------+"<< endl;
+    for (int i = 0; i < 4; i++){
+        cout << "|" << setw(30) << left << " (" +to_string(i)+ ")" << pkm1.skills[i].skillname << "|" << setw(30) << left << " (" +to_string(i)+ ")" << pkm1.skills[i].skillname << "|" << endl;
+        cout << "|" << setw(30) << left << "     - Type: " << pkm1.skills[i].skilltype << "|" << setw(30) << left << "     - Type: " << pkm2.skills[i].skilltype << "|" << endl;
+        cout << "|" << setw(30) << left << "     - Damage: " << pkm1.skills[i].damage << "|" << setw(30) << left << "     - Type: " << pkm2.skills[i].damage << "|" << endl;
+        cout << "|" << setw(30) << left << "     - Count: " << pkm1.skills[i].maxtry<< "(" << pkm1.skills[i].currenttry<< ")" << "|" 
+        << setw(30) << left << "     - Count: " << pkm2.skills[i].maxtry<< "(" << pkm2.skills[i].currenttry<< ")" << "|" << endl;
+    }
+    cout << "+------------------------------+------------------------------+"<< endl;
 }
+
+
+
+
+
