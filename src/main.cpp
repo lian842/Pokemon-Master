@@ -98,20 +98,22 @@ vector <Pokemon> Pokemons ={    // vector of Pokemon to put them in function
 
 
 
-void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {  
+
+
+void battle (Pokemon &pkm1, Pokemon &pkm2);
+    // progress battle
+    // gets two Pokemon from user input int
+    // no return
+
+
+void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i);
     // prints out the Battle Page 
     // gets two Pokemon and one int
     // int to check who is in the turn
     // no return, made the function to only print out the Battle Page
-}
 
-void battle (Pokemon &pkm1, Pokemon &pkm2){
-    // progress battle
-    // gets two Pokemon from user input int
-    // no return
-}
 
-pair <int, int> damageeff(int a, int b){
+pair <int, int> damageeff(int a, int b);
     // check the effectiveness of the attack
     // put in two types turned into int (using map)
     // check the effectiveness and print it (It was effective/super effective/ not very effective)
@@ -119,7 +121,7 @@ pair <int, int> damageeff(int a, int b){
     // when effective, return 0
     // when not very effective, return -3
     // and the result of typeeffective
-}
+
 
 
 
@@ -132,14 +134,15 @@ pair <int, int> damageeff(int a, int b){
 
 int main(){
     int pk1, pk2;
-    cout << "Choose a Pokemon(0~4): " << endl;
+    cout << "Choose a Pokemon(0~4): " ;
     cin >> pk1;
-    cout << "Choose a Pokemon(0~4): " << endl;
+    cout << "Choose a Pokemon(0~4): " ;
     cin >> pk2;
     if (pk1 == pk2){
         cout << "You have to choose Pokemons different from each other." << endl;
         return 0;   // terminate the battle when the user chose the same Pokemon
     }
+    cout << endl;
     battle (Pokemons[pk1], Pokemons[pk2]);  // run the battle
     return 0;
 }
@@ -212,8 +215,6 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
 
 
 
-
-
 void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {    //since 63 == 1 + 60 + 1 + 60 + 1, we use setw to match the condition
     cout << "+-------------------------------------------------------------+"<< endl;
     cout << "| 2023149003 OOP Computer Science                             |"<< endl;
@@ -225,7 +226,7 @@ void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {    //since 63 == 1 + 60 
     }
     cout << "|" << setw(30) << left <<  pkm1.name + " (*)" << "|" << setw(30) << left << pkm2.name << "|" << endl; 
     cout << "|" << setw(30) << left << "Type: " + pkm1.type << "|" << setw(30) << left << "Type: " + pkm2.type << "|" <<endl;
-    cout << "|" << setw(30) << left << "HP: " + pkm1.HP << "|" << setw(30) << left << "HP: " + pkm2.HP << "|" <<endl;
+    cout << "|" << setw(30) << left << "HP: " << pkm1.HP << "|" << setw(30) << left << "HP: " << pkm2.HP << "|" <<endl;
     cout << "+------------------------------+------------------------------+"<< endl;
     cout << "|" << setw(30) << left << "Latest skill: " + pkm1.latestskill << "|" << setw(30) << left << "Latest Skill: " + pkm2.latestskill << "|" <<endl;
     cout << "|" << setw(30) << left;
