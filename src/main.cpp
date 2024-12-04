@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <iomanip>
-
+#include <map>
 using namespace std;
 
 
@@ -16,12 +16,14 @@ int typeeffective [6][6] ={ // when super effective :1, effective :0, not very e
     {0, 0, 0, -1, 1, -1}    // Fire Type
 };
 
+map <string , int> Types ={
+    {"Normal", 0}, {"Ground", 1}, {"Electric", 2}. {"Water", 3}, {"Grass", 4}, {"Fire", 5}
+};
 
-string Pokemons [5] = {"Pikachu", "Dratini", "Eevee", "Charmander", "Palkia"};
 
 
 
-struct Pokemon {
+struct Pokemon {    // make struct to set each Pokemon (splitted the first struct to use the stat of Pokemon better)
     string name;
     string type;
     string latestskill;
@@ -38,6 +40,7 @@ struct Pokestat {   // make struct to set the skillname, skilltype, damage, maxt
     int maxtry;
     int currenttry;
 };
+
 
 Pokemon Pikachu = {"Pikachu", "Electric", "-", 2, 35,   // Pikachu stat
     { 
@@ -84,6 +87,13 @@ Pokemon Palkia = {"Palkia", "Water", "-", 2, 90,    // Palkia stat
     }
 };
 
+vector <Pokemon> Pokemons ={    // vector of Pokemon to put them in function
+    Pikachu, Dratini, Eevee, Charmander, Palkia
+};
+
+
+
+
 
 void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {  
     // prints out the Battle Page 
@@ -97,6 +107,18 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
     // gets two Pokemon from user input int
     // no return
 }
+
+int damageeff (int a, int b){
+    // check the effectiveness of the attack
+    // put in two types turned into int (using map)
+    // check the effectiveness and print it (It was effective/super effective/ not very effective)
+    // when super effective, return 5
+    // when effective, return 0
+    // when not very effective, return -3
+    // and the result of typeeffective
+}
+
+
 
 
 
@@ -113,10 +135,57 @@ int main(){
     cin >> pk2;
     if (pk1 == pk2){
         cout << "You have to choose Pokemons different from each other." << endl;
-        return 0;
+        return 0;   // terminate the battle when the user chose the same Pokemon
     }
+    battle (Pokemons[pk1], Pokemons[pk2]);  // run the battle
     return 0;
 }
+
+
+int damageeff (int a, int b){
+    if (typeeffective[a][b] == 1){
+        cout << "It was super effective." << endl;
+        return (5, 1);
+    } else if (typeeffective[a][b] == 0){
+        cout << "It was effective." << endl;
+        return (0, 0);
+    } else {
+        cout << "It was not very effective." << endl;
+        return (-3, -1);
+    }
+}
+
+
+
+void battle (Pokemon &pkm1, Pokemon &pkm2){
+    int i = 1;
+    int j;
+    while (pkm1.HP * pkm2.HP != 0){ // battle until one of the Pokemon's HP == 0
+        battlePage(pkm1, pkm2, i);
+        cout << "Choose a skill (0~3): ";
+        cin >> j;
+        if (i % 2 == 1){
+            pkm1.latestskill = pkm1.skills[j].skillname;
+            cout << pkm1.name << " used " << pkm1.skills[j].skillname <<"." << endl;
+            int a = Types[pkm1.skills[j].skillname];
+            int b = Types[pkm2.type];
+            int c, d = damageeff(a, b);
+            pkm1.effectiveness = d;
+            pkm2.HP -= pkm1.skills[j].damage - c;
+        } else {
+            pkm2.latestskill = pkm2.skills[j].skillname;
+            cout << pkm2.name << " used " << pkm2.skills[j].skillname <<"." << endl;
+            int a = Types[pkm2.skills[j].skillname];
+            int b = Types[pkm1.type];
+            int c, d = damageeff(a, b);
+            pkm2.effectiveness = d;
+            pkm1.HP -= pkm2.skills[j].damage - c;
+        }
+        i += 1;
+    }
+
+}
+
 
 
 
