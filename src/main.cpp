@@ -3,6 +3,9 @@
 #include <string>
 #include <iomanip>
 #include <map>
+#include <utility>
+
+
 using namespace std;
 
 
@@ -108,7 +111,7 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
     // no return
 }
 
-int damageeff (int a, int b){
+pair <int, int> damageeff(int a, int b){
     // check the effectiveness of the attack
     // put in two types turned into int (using map)
     // check the effectiveness and print it (It was effective/super effective/ not very effective)
@@ -142,16 +145,16 @@ int main(){
 }
 
 
-int damageeff (int a, int b){
+pair <int, int> damageeff(int a, int b){
     if (typeeffective[a][b] == 1){
         cout << "It was super effective." << endl;
-        return (5, 1);
+        return {5, 1};
     } else if (typeeffective[a][b] == 0){
         cout << "It was effective." << endl;
-        return (0, 0);
+        return {0, 0};
     } else {
         cout << "It was not very effective." << endl;
-        return (-3, -1);
+        return {-3, -1};
     }
 }
 
@@ -174,7 +177,9 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
             cout << pkm1.name << " used " << pkm1.skills[j].skillname <<"." << endl;
             int a = Types[pkm1.skills[j].skillname];
             int b = Types[pkm2.type];
-            int c, d = damageeff(a, b);
+            pair <int, int> result = damageeff(a, b);
+            int c = result.first;
+            int d = result.second;
             pkm1.effectiveness = d;
             pkm2.HP -= pkm1.skills[j].damage - c;
         } else {
@@ -187,7 +192,9 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
             cout << pkm2.name << " used " << pkm2.skills[j].skillname <<"." << endl;
             int a = Types[pkm2.skills[j].skillname];
             int b = Types[pkm1.type];
-            int c, d = damageeff(a, b);
+            pair <int, int> result = damageeff(a, b);
+            int c = result.first;
+            int d = result.second;
             pkm2.effectiveness = d;
             pkm1.HP -= pkm2.skills[j].damage - c;
         }
