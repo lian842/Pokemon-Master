@@ -5,7 +5,6 @@
 #include <map>
 #include <utility>
 
-
 using namespace std;
 
 
@@ -122,8 +121,9 @@ pair <int, int> damageeff(int a, int b);
     // and the result of typeeffective
 
 
-
-
+string setlength(string str);
+    // gets the string that to be printed
+    // and add the blank after the string to match the length (30)
 
 
 
@@ -213,61 +213,62 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
 
 
 
+string setlength(string &str){
+    return str + string(30-str.length(), ' ');
+}
+
 
 void battlePage(Pokemon &pkm1, Pokemon &pkm2, int i) {  // since 63 == 1 + 30 + 1 + 30 + 1, set the space with setw
     cout << "+-------------------------------------------------------------+" << endl;
     cout << "| 2024-02 Object-Oriented Programming Pokemon Master          |" << endl;
     cout << "+------------------------------+------------------------------+" << endl;
     if (i % 2 == 1) { // pkm1's turn
-        cout << "|" << setw(30) << left << (" " + pkm1.name + " (*)")
-             << "|" << setw(30) << left << (" " + pkm2.name) << "|" << endl;
+        cout << "|" << setlength(" " + pkm1.name + " (*)")
+             << "|" << setlength(" " + pkm2.name) << "|" << endl;
     } else { // pkm2's turn
-        cout << "|" << setw(30) << left << (" " + pkm1.name)
-             << "|" << setw(30) << left << (" " + pkm2.name + " (*)") << "|" << endl;
+        cout << "|" << setlength(" " + pkm1.name)
+             << "|" << setlength(" " + pkm2.name + " (*)") << "|" << endl;
     }
-    cout << "|" << setw(30) << left << (" Type: " + pkm1.type)  // show type
-         << "|" << setw(30) << left << (" Type: " + pkm2.type) << "|" << endl;
-    cout << "|" << setw(30) << left << (" HP: " + to_string(pkm1.HP))   // show HP
-         << "|" << setw(30) << left << (" HP: " + to_string(pkm2.HP)) << "|" << endl;
+    cout << "|" << setlength(" Type: " + pkm1.type)  // show type
+         << "|" << setlength(" Type: " + pkm2.type) << "|" << endl;
+    cout << "|" << setlength(" HP: " + to_string(pkm1.HP))   // show HP
+         << "|" << setlength(" HP: " + to_string(pkm2.HP)) << "|" << endl;
     cout << "+------------------------------+------------------------------+" << endl;
-    cout << "|" << setw(30) << left << (" Latest skill: " + pkm1.latestskill)   // show latest skill
-         << "|" << setw(30) << left << (" Latest Skill: " + pkm2.latestskill) << "|" << endl;
+    cout << "|" << setlength(" Latest skill: " + pkm1.latestskill)   // show latest skill
+         << "|" << setlength(" Latest Skill: " + pkm2.latestskill) << "|" << endl;
     cout << "|";
     if (pkm1.effectiveness == 1) {  // show effectiveness of pkm1 
-        cout << setw(30) << left << " It was super effective.";
+        cout << setlength(" It was super effective.");
     } else if (pkm1.effectiveness == 0) {
-        cout << setw(30) << left << " It was effective.";
+        cout << setlength(" It was effective.");
     } else if (pkm1.effectiveness == -1) {
-        cout << setw(30) << left << " It was not very effective.";
+        cout << setlength(" It was not very effective.");
     } else {
-        cout << setw(30) << left << ""; // for initiall (no latest skill)
+        cout << setlength(""); // for initiall (no latest skill)
     }
     if (pkm2.effectiveness == 1) {  // show effectiveness of pkm2
-        cout << setw(30) << left << " It was super effective.";
+        cout << setlength(" It was super effective.");
     } else if (pkm2.effectiveness == 0) {
-        cout << setw(30) << left << " It was effective.";
+        cout << setlength(" It was effective.");
     } else if (pkm2.effectiveness == -1) {
         cout << setw(30) << left << " It was not very effective.";
     } else {
-        cout << setw(30) << left << ""; //for initiall (no latest skill)
+        cout << setlength(""); // for initiall (no latest skill)
     }
     cout << "|" << endl;
     cout << "+------------------------------+------------------------------+" << endl;
     for (int i = 0; i < 4; i++) {   // show skills
-        cout << "|" << setw(30) << left << (" (" + to_string(i) + ") " + pkm1.skills[i].skillname)
-             << "|" << setw(30) << left << (" (" + to_string(i) + ") " + pkm2.skills[i].skillname) << "|" << endl;
+        cout << "|" << setlength(" (" + to_string(i) + ") " + pkm1.skills[i].skillname)
+             << "|" << setlength(" (" + to_string(i) + ") " + pkm2.skills[i].skillname) << "|" << endl;
 
-        cout << "|" << setw(30) << left << ("     - Type: " + pkm1.skills[i].skilltype)
-             << "|" << setw(30) << left << ("     - Type: " + pkm2.skills[i].skilltype) << "|" << endl;
+        cout << "|" << setlength("     - Type: " + pkm1.skills[i].skilltype)
+             << "|" << setlength("     - Type: " + pkm2.skills[i].skilltype) << "|" << endl;
 
-        cout << "|" << setw(30) << left << ("     - Damage: " + to_string(pkm1.skills[i].damage))
-             << "|" << setw(30) << left << ("     - Damage: " + to_string(pkm2.skills[i].damage)) << "|" << endl;
+        cout << "|" << setlength("     - Damage: " + to_string(pkm1.skills[i].damage))
+             << "|" << setlength("     - Damage: " + to_string(pkm2.skills[i].damage)) << "|" << endl;
 
-        cout << "|" << setw(30) << left
-             << ("     - Count: " + to_string(pkm1.skills[i].currenttry) + "(" + to_string(pkm1.skills[i].maxtry) + ")")
-             << "|" << setw(30) << left
-             << ("     - Count: " + to_string(pkm2.skills[i].currenttry) + "(" + to_string(pkm2.skills[i].maxtry) + ")")
-             << "|" << endl;
+        cout << setlength("     - Count: " + to_string(pkm1.skills[i].currenttry) + "(" + to_string(pkm1.skills[i].maxtry) + ")")<< "|"
+        << setlength("     - Count: " + to_string(pkm2.skills[i].currenttry) + "(" + to_string(pkm2.skills[i].maxtry) + ")") << "|" << endl;
     }
     cout << "+------------------------------+------------------------------+" << endl;
 }
