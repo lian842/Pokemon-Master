@@ -17,7 +17,7 @@ int typeeffective [6][6] ={ // when super effective :1, effective :0, not very e
 };
 
 map <string , int> Types ={
-    {"Normal", 0}, {"Ground", 1}, {"Electric", 2}. {"Water", 3}, {"Grass", 4}, {"Fire", 5}
+    {"Normal", 0}, {"Ground", 1}, {"Electric", 2}, {"Water", 3}, {"Grass", 4}, {"Fire", 5}
 };
 
 
@@ -160,11 +160,16 @@ int damageeff (int a, int b){
 void battle (Pokemon &pkm1, Pokemon &pkm2){
     int i = 1;
     int j;
-    while (pkm1.HP * pkm2.HP != 0){ // battle until one of the Pokemon's HP == 0
+    while (pkm1.HP <= 0|| pkm2.HP <= 0){ // battle until one of the Pokemon's HP == 0
         battlePage(pkm1, pkm2, i);
         cout << "Choose a skill (0~3): ";
         cin >> j;
         if (i % 2 == 1){
+            if (pkm1.skills[j].currenttry == 0){
+                cout << pkm1.name <<" failed to perform " << pkm1.skills[j].skillname << "." << endl;
+            } else {
+                pkm1.skills[j].currenttry -= 1;
+            }
             pkm1.latestskill = pkm1.skills[j].skillname;
             cout << pkm1.name << " used " << pkm1.skills[j].skillname <<"." << endl;
             int a = Types[pkm1.skills[j].skillname];
@@ -173,6 +178,11 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
             pkm1.effectiveness = d;
             pkm2.HP -= pkm1.skills[j].damage - c;
         } else {
+            if (pkm2.skills[j].currenttry == 0){
+                cout << pkm2.name <<" failed to perform " << pkm2.skills[j].skillname << "." << endl;
+            } else {
+                pkm2.skills[j].currenttry -= 1;
+            }
             pkm2.latestskill = pkm2.skills[j].skillname;
             cout << pkm2.name << " used " << pkm2.skills[j].skillname <<"." << endl;
             int a = Types[pkm2.skills[j].skillname];
@@ -182,6 +192,12 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
             pkm1.HP -= pkm2.skills[j].damage - c;
         }
         i += 1;
+    }
+    cout << "===============================================================" << endl;
+    if (pkm1.HP <= 0){
+        cout << "Match Result: " << pkm2.name << " defeats " << pkm1.name;
+    } else {
+        cout << "Match Result: " << pkm1.name << " defeats " << pkm2.name;
     }
 
 }
