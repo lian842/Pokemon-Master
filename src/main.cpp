@@ -24,6 +24,13 @@ map <string , int> Types ={
 };
 
 
+struct Pokestat {   // make struct to set the skillname, skilltype, damage, maxtry of each pokemon
+    string skillname;
+    string skilltype;
+    int damage;
+    int maxtry;
+    int currenttry;
+};
 
 
 struct Pokemon {    // make struct to set each Pokemon (splitted the first struct to use the stat of Pokemon better)
@@ -35,14 +42,6 @@ struct Pokemon {    // make struct to set each Pokemon (splitted the first struc
     vector <struct Pokestat> skills;
 };
 
-
-struct Pokestat {   // make struct to set the skillname, skilltype, damage, maxtry of each pokemon
-    string skillname;
-    string skilltype;
-    int damage;
-    int maxtry;
-    int currenttry;
-};
 
 
 Pokemon Pikachu = {"Pikachu", "Electric", "-", 2, 35,   // Pikachu stat
@@ -138,13 +137,11 @@ int main(){
     cin >> pk1;
     cout << "Choose a Pokemon(0~4): " ;
     cin >> pk2;
-
+    cout << endl;
     if (pk1 == pk2){
-        cout << "You have to choose Pokemons different from each other." << endl;
+        cout << "You have to choose Pokemons different from each other.";
         return 0;   // terminate the battle when the user chose the same Pokemon
     }
-
-    cout << endl;
     battle (Pokemons[pk1], Pokemons[pk2]);  // run the battle
     return 0;
 }
@@ -166,9 +163,9 @@ pair <int, int> damageeff(int a, int b){
 
 
 void battle (Pokemon &pkm1, Pokemon &pkm2){
-    int i = 1;
-    int j;
+    int i = 1;  // int value to check the turn
     while (pkm1.HP > 0 && pkm2.HP > 0){ // battle until one of the Pokemon's HP <= 0
+        int j;
         battlePage(pkm1, pkm2, i);
         cout << "Choose a skill (0~3): ";
         cin >> j;
@@ -217,46 +214,64 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
 
 
 
-void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i) {    //since 63 == 1 + 60 + 1 + 60 + 1, we use setw to match the condition
-    cout << "+-------------------------------------------------------------+"<< endl;
-    cout << "| 2024-02 Object-Oriented Programming Pokemon Master          |"<< endl;
-    cout << "+------------------------------+------------------------------+"<< endl;
-    if (i%2 == 1){      // show the turn of the battle using i
-        cout << "|" << setw(30) << left <<  pkm1.name + " (*)" << "|" << setw(30) << left << pkm2.name << "|" << endl; 
-    } else {
-        cout << "|" << setw(30) << left <<  pkm1.name << "|" << setw(30) << left << pkm2.name + " (*)" << "|" << endl; 
+void battlePage(Pokemon &pkm1, Pokemon &pkm2, int i) {  // since 63 == 1 + 30 + 1 + 30 + 1, set the space with setw
+    cout << "+-------------------------------------------------------------+" << endl;
+    cout << "| 2024-02 Object-Oriented Programming Pokemon Master          |" << endl;
+    cout << "+------------------------------+------------------------------+" << endl;
+    if (i % 2 == 1) { // pkm1's turn
+        cout << "|" << setw(30) << left << (" " + pkm1.name + " (*)")
+             << "|" << setw(30) << left << (" " + pkm2.name) << "|" << endl;
+    } else { // pkm2's turn
+        cout << "|" << setw(30) << left << (" " + pkm1.name)
+             << "|" << setw(30) << left << (" " + pkm2.name + " (*)") << "|" << endl;
     }
-    cout << "|" << setw(30) << left << "Type: " + pkm1.type << "|" << setw(30) << left << "Type: " + pkm2.type << "|" <<endl;
-    cout << "|" << setw(30) << left << "HP: " << pkm1.HP << "|" << setw(30) << left << "HP: " << pkm2.HP << "|" <<endl;
-    cout << "+------------------------------+------------------------------+"<< endl;
-    cout << "|" << setw(30) << left << "Latest skill: " + pkm1.latestskill << "|" << setw(30) << left << "Latest Skill: " + pkm2.latestskill << "|" <<endl;
-    cout << "|" << setw(30) << left;
-    if (pkm1.effectiveness == 1){       // show the effectiveness of the previous attack
-        cout << " It was super effective";
-    } else if (pkm1.effectiveness == 0){
-        cout << " It was effective";
+    cout << "|" << setw(30) << left << (" Type: " + pkm1.type)  // show type
+         << "|" << setw(30) << left << (" Type: " + pkm2.type) << "|" << endl;
+    cout << "|" << setw(30) << left << (" HP: " + to_string(pkm1.HP))   // show HP
+         << "|" << setw(30) << left << (" HP: " + to_string(pkm2.HP)) << "|" << endl;
+    cout << "+------------------------------+------------------------------+" << endl;
+    cout << "|" << setw(30) << left << (" Latest skill: " + pkm1.latestskill)   // show latest skill
+         << "|" << setw(30) << left << (" Latest Skill: " + pkm2.latestskill) << "|" << endl;
+    cout << "|";
+    if (pkm1.effectiveness == 1) {  // show effectiveness of pkm1 
+        cout << setw(30) << left << " It was super effective.";
+    } else if (pkm1.effectiveness == 0) {
+        cout << setw(30) << left << " It was effective.";
     } else if (pkm1.effectiveness == -1) {
-        cout << " It was not very effective";
+        cout << setw(30) << left << " It was not very effective.";
+    } else {
+        cout << setw(30) << left << ""; // for initiall (no latest skill)
     }
-    cout << "|" << setw(30) << left;
-        if (pkm2.effectiveness == 1){
-        cout << " It was super effective";
-    } else if (pkm2.effectiveness == 0){
-        cout << " It was effective";
+    if (pkm2.effectiveness == 1) {  // show effectiveness of pkm2
+        cout << setw(30) << left << " It was super effective.";
+    } else if (pkm2.effectiveness == 0) {
+        cout << setw(30) << left << " It was effective.";
     } else if (pkm2.effectiveness == -1) {
-        cout << " It was not very effective";
+        cout << setw(30) << left << " It was not very effective.";
+    } else {
+        cout << setw(30) << left << ""; //for initiall (no latest skill)
     }
     cout << "|" << endl;
-    cout << "+------------------------------+------------------------------+"<< endl;
-    for (int i = 0; i < 4; i++){    // show the current stat of the skills
-        cout << "|" << setw(30) << left << " (" +to_string(i)+ ")" << pkm1.skills[i].skillname << "|" << setw(30) << left << " (" +to_string(i)+ ")" << pkm1.skills[i].skillname << "|" << endl;
-        cout << "|" << setw(30) << left << "     - Type: " << pkm1.skills[i].skilltype << "|" << setw(30) << left << "     - Type: " << pkm2.skills[i].skilltype << "|" << endl;
-        cout << "|" << setw(30) << left << "     - Damage: " << pkm1.skills[i].damage << "|" << setw(30) << left << "     - Type: " << pkm2.skills[i].damage << "|" << endl;
-        cout << "|" << setw(30) << left << "     - Count: " << pkm1.skills[i].maxtry<< "(" << pkm1.skills[i].currenttry<< ")" << "|" 
-        << setw(30) << left << "     - Count: " << pkm2.skills[i].maxtry<< "(" << pkm2.skills[i].currenttry<< ")" << "|" << endl;
+    cout << "+------------------------------+------------------------------+" << endl;
+    for (int i = 0; i < 4; i++) {   // show skills
+        cout << "|" << setw(30) << left << (" (" + to_string(i) + ") " + pkm1.skills[i].skillname)
+             << "|" << setw(30) << left << (" (" + to_string(i) + ") " + pkm2.skills[i].skillname) << "|" << endl;
+
+        cout << "|" << setw(30) << left << ("     - Type: " + pkm1.skills[i].skilltype)
+             << "|" << setw(30) << left << ("     - Type: " + pkm2.skills[i].skilltype) << "|" << endl;
+
+        cout << "|" << setw(30) << left << ("     - Damage: " + to_string(pkm1.skills[i].damage))
+             << "|" << setw(30) << left << ("     - Damage: " + to_string(pkm2.skills[i].damage)) << "|" << endl;
+
+        cout << "|" << setw(30) << left
+             << ("     - Count: " + to_string(pkm1.skills[i].currenttry) + "(" + to_string(pkm1.skills[i].maxtry) + ")")
+             << "|" << setw(30) << left
+             << ("     - Count: " + to_string(pkm2.skills[i].currenttry) + "(" + to_string(pkm2.skills[i].maxtry) + ")")
+             << "|" << endl;
     }
-    cout << "+------------------------------+------------------------------+"<< endl;
+    cout << "+------------------------------+------------------------------+" << endl;
 }
+
 
 
 
