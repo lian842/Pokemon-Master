@@ -3,9 +3,11 @@
 #include <string>
 #include <iomanip>
 #include <map>
-#include <utility>
+#include <cstdio>
 
 using namespace std;
+
+
 
 
 
@@ -45,7 +47,7 @@ struct Pokemon {    // make struct to set each Pokemon (splitted the first struc
 
 Pokemon Pikachu = {"Pikachu", "Electric", "-", 2, 35,   // Pikachu stat
     { 
-    {"Takcle", "Normal", 4, 5, 5},
+    {"Tackle", "Normal", 4, 5, 5},
     {"Grass Knot", "Grass", 8, 5, 5},
     {"Thunderbolt", "Electric", 10, 5, 5},
     {"Megabolt", "Electric", 15, 3, 3}
@@ -63,7 +65,7 @@ Pokemon Dratini = {"Dratini", "Water", "-", 2, 41,  // Dratini stat
 
 Pokemon Eevee = {"Eevee", "Normal", "-", 2, 55,     // Eevee stat
     {
-    {"Takcle", "Normal", 4, 5, 5},
+    {"Tackle", "Normal", 4, 5, 5},
     {"Sand Attack", "Ground", 8, 3, 3},
     {"Bite", "Normal", 12, 3, 3},
     {"Rain Dance", "Water", 15, 1, 1}  
@@ -72,8 +74,8 @@ Pokemon Eevee = {"Eevee", "Normal", "-", 2, 55,     // Eevee stat
 
 Pokemon Charmander = {"Charmander", "Fire", "-", 2, 39, // Charmander stat 
     {
-    {"Takcle", "Normal", 4, 5, 5},
-    {"Flamehrower", "Fire", 11, 5, 5},
+    {"Tackle", "Normal", 4, 5, 5},
+    {"Flamethrower", "Fire", 11, 5, 5},
     {"Dig", "Ground", 7, 5, 5},
     {"Heat Wave", "Fire", 14, 5, 5}
     }
@@ -114,14 +116,13 @@ void battlePage (Pokemon &pkm1, Pokemon &pkm2, int i);
 pair <int, int> damageeff(int a, int b);
     // check the effectiveness of the attack
     // put in two types turned into int (using map)
-    // check the effectiveness and print it (It was effective/super effective/ not very effective)
     // when super effective, return 5
     // when effective, return 0
     // when not very effective, return -3
     // and the result of typeeffective
 
 
-string setlength(string str);
+string setlen(const string &str);
     // gets the string that to be printed
     // and add the blank after the string to match the length (30)
 
@@ -132,12 +133,15 @@ string setlength(string str);
 
 
 int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);   // to prevent falseful redirection
+
     int pk1, pk2;
     cout << "Choose a Pokemon(0~4): " ;
     cin >> pk1;
     cout << "Choose a Pokemon(0~4): " ;
     cin >> pk2;
-    cout << endl;
+    //cout << "\n";
     if (pk1 == pk2){
         cout << "You have to choose Pokemons different from each other.";
         return 0;   // terminate the battle when the user chose the same Pokemon
@@ -147,18 +151,18 @@ int main(){
 }
 
 
+
 pair <int, int> damageeff(int a, int b){
     if (typeeffective[a][b] == 1){
-        cout << "It was super effective." << endl;
         return {5, 1};
     } else if (typeeffective[a][b] == 0){
-        cout << "It was effective." << endl;
         return {0, 0};
     } else {
-        cout << "It was not very effective." << endl;
         return {-3, -1};
     }
 }
+
+
 
 
 
@@ -178,11 +182,18 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
             int d = result.second;
             pkm1.effectiveness = d;                         // show the effectiveness
             if (pkm1.skills[j].currenttry == 0){    // when the skill ran out of try 
-                cout << pkm1.name <<" failed to perform " << pkm1.skills[j].skillname << "." << endl;
+                cout << pkm1.name <<" failed to perform " << pkm1.skills[j].skillname << "." << "\n";
             } else {
                 pkm1.skills[j].currenttry -= 1;
                 pkm2.HP -= (pkm1.skills[j].damage + c);     // change the HP according to effectiveness       
-                cout << pkm1.name << " used " << pkm1.skills[j].skillname <<"." << endl;
+                cout << pkm1.name << " used " << pkm1.skills[j].skillname <<"." << "\n";
+                if (d == 1){
+                    cout << "It was super effective." << endl;
+                } else if (d == 0) {
+                    cout << "It was effective." << endl;
+                } else if (d == -1){
+                    cout << "It was not very effective." << endl;
+                }
             }
         } else {    // when pkm2 turn
             pkm2.latestskill = pkm2.skills[j].skillname;     // change the latest skill to show in battle page
@@ -193,84 +204,95 @@ void battle (Pokemon &pkm1, Pokemon &pkm2){
             int d = result.second;
             pkm2.effectiveness = d;                          // show the effectiveness
             if (pkm2.skills[j].currenttry == 0){
-                cout << pkm2.name <<" failed to perform " << pkm2.skills[j].skillname << "." << endl;    // when the skill ran out of try 
+                cout << pkm2.name <<" failed to perform " << pkm2.skills[j].skillname << "." << "\n";    // when the skill ran out of try 
             } else {
                 pkm2.skills[j].currenttry -= 1;  
-                cout << pkm2.name << " used " << pkm2.skills[j].skillname <<"." << endl;
+                cout << pkm2.name << " used " << pkm2.skills[j].skillname <<"." << "\n";
                 pkm1.HP -= (pkm2.skills[j].damage + c);      // change the HP according to effectiveness
-            }
+                if (d == 1){
+                    cout << "It was super effective." << endl;
+                } else if (d == 0) {
+                    cout << "It was effective." << endl;
+                } else if (d == -1){
+                    cout << "It was not very effective." << endl;
+                }
+            } 
         }
+        cout << endl;
         i += 1;
     }
-    cout << "===============================================================" << endl;
+    cout << "===============================================================" << "\n";
     if (pkm1.HP <= 0){      // show the result
-        cout << "Match Result: " << pkm2.name << " defeats " << pkm1.name;
+        cout << "Match Result: " << pkm2.name << " defeats " << pkm1.name << "\n";
     } else {
-        cout << "Match Result: " << pkm1.name << " defeats " << pkm2.name;
+        cout << "Match Result: " << pkm1.name << " defeats " << pkm2.name << "\n";
     }
+}
 
+string setlen(const string &str) {
+    int l = str.length();    // get the length of the string (str)
+    string result = str + string(30 - l, ' ');
+    return result; // add the blank to set the desired length
 }
 
 
-
-string setlength(string &str){
-    return str + string(30-str.length(), ' ');
-}
-
-
-void battlePage(Pokemon &pkm1, Pokemon &pkm2, int i) {  // since 63 == 1 + 30 + 1 + 30 + 1, set the space with setw
-    cout << "+-------------------------------------------------------------+" << endl;
-    cout << "| 2024-02 Object-Oriented Programming Pokemon Master          |" << endl;
-    cout << "+------------------------------+------------------------------+" << endl;
+void battlePage(Pokemon &pkm1, Pokemon &pkm2, int i) {  // since 63 == 1 + 30 + 1 + 30 + 1, set the space with setlen
+    cout << "+-------------------------------------------------------------+\n";
+    cout << "| 2024-02 Object-Oriented Programming Pokemon Master          |\n";
+    cout << "+------------------------------+------------------------------+\n";
     if (i % 2 == 1) { // pkm1's turn
-        cout << "|" << setlength(" " + pkm1.name + " (*)")
-             << "|" << setlength(" " + pkm2.name) << "|" << endl;
+        cout << "|" << setlen(string(" ") + pkm1.name + " (*)")
+             << "|" << setlen(string(" ") + pkm2.name) << "|\n";
     } else { // pkm2's turn
-        cout << "|" << setlength(" " + pkm1.name)
-             << "|" << setlength(" " + pkm2.name + " (*)") << "|" << endl;
+        cout << "|" << setlen(string(" ") + pkm1.name)
+             << "|" << setlen(string(" ") + pkm2.name + " (*)") << "|\n" << flush;
     }
-    cout << "|" << setlength(" Type: " + pkm1.type)  // show type
-         << "|" << setlength(" Type: " + pkm2.type) << "|" << endl;
-    cout << "|" << setlength(" HP: " + to_string(pkm1.HP))   // show HP
-         << "|" << setlength(" HP: " + to_string(pkm2.HP)) << "|" << endl;
-    cout << "+------------------------------+------------------------------+" << endl;
-    cout << "|" << setlength(" Latest skill: " + pkm1.latestskill)   // show latest skill
-         << "|" << setlength(" Latest Skill: " + pkm2.latestskill) << "|" << endl;
+    cout << "|" << setlen(string(" Type: ") + pkm1.type)  // show type
+         << "|" << setlen(string(" Type: ") + pkm2.type) << "|\n";
+    cout << "|" << setlen(string(" HP: ") + to_string(pkm1.HP))   // show HP
+         << "|" << setlen(string(" HP: ") + to_string(pkm2.HP)) << "|\n";
+    cout << "+------------------------------+------------------------------+\n" << flush;
+    cout << "|" << setlen(string(" Latest Skill: ") + pkm1.latestskill)   // show latest skill
+         << "|" << setlen(string(" Latest Skill: ") + pkm2.latestskill) << "|\n";
     cout << "|";
     if (pkm1.effectiveness == 1) {  // show effectiveness of pkm1 
-        cout << setlength(" It was super effective.");
+        cout << setlen(" It was super effective.");
     } else if (pkm1.effectiveness == 0) {
-        cout << setlength(" It was effective.");
+        cout << setlen(" It was effective.");
     } else if (pkm1.effectiveness == -1) {
-        cout << setlength(" It was not very effective.");
+        cout << setlen(" It was not very effective.");
     } else {
-        cout << setlength(""); // for initiall (no latest skill)
+        cout << setlen(string(" ")); // for initiall (no latest skill)
     }
+    cout << "|";
     if (pkm2.effectiveness == 1) {  // show effectiveness of pkm2
-        cout << setlength(" It was super effective.");
+        cout << setlen(" It was super effective.");
     } else if (pkm2.effectiveness == 0) {
-        cout << setlength(" It was effective.");
+        cout << setlen(" It was effective.");
     } else if (pkm2.effectiveness == -1) {
-        cout << setw(30) << left << " It was not very effective.";
+        cout << setlen(" It was not very effective.");
     } else {
-        cout << setlength(""); // for initiall (no latest skill)
+        cout << setlen(string(" ")); // for initiall (no latest skill)
     }
-    cout << "|" << endl;
-    cout << "+------------------------------+------------------------------+" << endl;
-    for (int i = 0; i < 4; i++) {   // show skills
-        cout << "|" << setlength(" (" + to_string(i) + ") " + pkm1.skills[i].skillname)
-             << "|" << setlength(" (" + to_string(i) + ") " + pkm2.skills[i].skillname) << "|" << endl;
+    cout << "|\n";
+    cout << "+------------------------------+------------------------------+\n" << flush;
+for (int i = 0; i < 4; i++) {
+    cout << "|" << setlen(string(" (") + to_string(i) + string(") ") + pkm1.skills[i].skillname)
+         << "|" << setlen(string(" (") + to_string(i) + string(") ") + pkm2.skills[i].skillname) << "|\n";
 
-        cout << "|" << setlength("     - Type: " + pkm1.skills[i].skilltype)
-             << "|" << setlength("     - Type: " + pkm2.skills[i].skilltype) << "|" << endl;
+    cout << "|" << setlen(string("     - Type: ") + pkm1.skills[i].skilltype)
+         << "|" << setlen(string("     - Type: ") + pkm2.skills[i].skilltype) << "|\n";
 
-        cout << "|" << setlength("     - Damage: " + to_string(pkm1.skills[i].damage))
-             << "|" << setlength("     - Damage: " + to_string(pkm2.skills[i].damage)) << "|" << endl;
+    cout << "|" << setlen(string("     - Damage: ") + to_string(pkm1.skills[i].damage))
+         << "|" << setlen(string("     - Damage: ") + to_string(pkm2.skills[i].damage)) << "|\n";
 
-        cout << setlength("     - Count: " + to_string(pkm1.skills[i].currenttry) + "(" + to_string(pkm1.skills[i].maxtry) + ")")<< "|"
-        << setlength("     - Count: " + to_string(pkm2.skills[i].currenttry) + "(" + to_string(pkm2.skills[i].maxtry) + ")") << "|" << endl;
-    }
-    cout << "+------------------------------+------------------------------+" << endl;
+    cout << "|" << setlen(string("     - Count: ") + to_string(pkm1.skills[i].currenttry) + string("(") + to_string(pkm1.skills[i].maxtry) + string(")"))
+         << "|" << setlen(string("     - Count: ") + to_string(pkm2.skills[i].currenttry) + string("(") + to_string(pkm2.skills[i].maxtry) + string(")")) << "|\n";
+}
+
+
+    cout << "+------------------------------+------------------------------+\n";
+    fflush(stdout);
 }
 
 
