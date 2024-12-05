@@ -1,13 +1,13 @@
 # Pokemon Master Kiung
 ## 2024-02 OOP Assignment3 in Yonsei University
-Program that shows a Pokemon battle.
-5 Pokemons available: Pikachu, Dratini, Eevee, Charmander, Palkia.
+- Program that shows a Pokemon battle.
+- 5 Pokemons available: Pikachu, Dratini, Eevee, Charmander, Palkia.
 ------------------------------------------------------------------
 
 
 ## Code Inspection
 ### Pokemons
-To show the Type, HP of each Pokemon and skill sets, I made two strctures.
+To show the Type, HP of each Pokemon and skill sets, made two strctures.
 1. **Pokemon**
     ```cpp
     struct Pokemon {    
@@ -85,8 +85,73 @@ Shows the currency of the battle using battlePage
 Let user to choose the skill they want to use.
 - When the skill is available, reduces the available try number, reduces other Pokemon's HP, updates recently used skill & effectiveness.
 - And shows how effective the attack was.
+#### example
+```txt
+    +-------------------------------------------------------------+
+    | 2024-02 Object-Oriented Programming Pokemon Master          |
+    +------------------------------+------------------------------+
+    | Charmander                   | Palkia (*)                   |
+    | Type: Fire                   | Type: Water                  |
+    | HP: 39                       | HP: 86                       |
+    +------------------------------+------------------------------+
+    | Latest Skill: Tackle         | Latest Skill: -              |
+    | It was effective.            |                              |
+    +------------------------------+------------------------------+ 
+    | (0) Tackle                   | (0) Hydro Pump               |
+    |     - Type: Normal           |     - Type: Water            |
+    |     - Damage: 4              |     - Damage: 12             |
+    |     - Count: 4(5)            |     - Count: 10(10)          |
+    | (1) Flamethrower             | (1) Earth Power              |
+    |     - Type: Fire             |     - Type: Ground           |
+    |     - Damage: 11             |     - Damage: 15             |
+    |     - Count: 5(5)            |     - Count: 10(10)          |
+    | (2) Dig                      | (2) Surf                     |
+    |     - Type: Ground           |     - Type: Water            |
+    |     - Damage: 7              |     - Damage: 13             |
+    |     - Count: 5(5)            |     - Count: 10(10)          |
+    | (3) Heat Wave                | (3) Spatial Rend             |
+    |     - Type: Fire             |     - Type: Normal           |
+    |     - Damage: 14             |     - Damage: 30             |
+    |     - Count: 5(5)            |     - Count: 10(10)          |
+    +------------------------------+------------------------------+
+    Choose a skill (0~3): Palkia used Hydro Pump.
+    It was super effective.
+```
+
 - When the skill is unavailable, shows the user that it failed to perform.
 Continue Until one of the Pokemon is dead. (HP <= 0)
+#### example
+```txt
+    +-------------------------------------------------------------+
+    | 2024-02 Object-Oriented Programming Pokemon Master          |
+    +------------------------------+------------------------------+
+    | Charmander                   | Eevee (*)                    |
+    | Type: Fire                   | Type: Normal                 |
+    | HP: 3                        | HP: 21                       |
+    +------------------------------+------------------------------+
+    | Latest Skill: Heat Wave      | Latest Skill: Rain Dance     |
+    | It was effective.            | It was super effective.      |
+    +------------------------------+------------------------------+
+    | (0) Tackle                   | (0) Tackle                   |
+    |     - Type: Normal           |     - Type: Normal           |
+    |     - Damage: 4              |     - Damage: 4              |
+    |     - Count: 0(5)            |     - Count: 1(5)            |
+    | (1) Flamethrower             | (1) Sand Attack              |
+    |     - Type: Fire             |     - Type: Ground           |
+    |     - Damage: 11             |     - Damage: 8              |
+    |     - Count: 5(5)            |     - Count: 3(3)            |
+    | (2) Dig                      | (2) Bite                     |
+    |     - Type: Ground           |     - Type: Normal           |
+    |     - Damage: 7              |     - Damage: 12             |
+    |     - Count: 5(5)            |     - Count: 3(3)            |
+    | (3) Heat Wave                | (3) Rain Dance               |
+    |     - Type: Fire             |     - Type: Water            |
+    |     - Damage: 14             |     - Damage: 15             |
+    |     - Count: 4(5)            |     - Count: 0(1)            |
+    +------------------------------+------------------------------+
+    Choose a skill (0~3): Eevee failed to perform Rain Dance.
+    
+```
 
 2. **after battle**
 Shows that one Pokemon defeated another.
