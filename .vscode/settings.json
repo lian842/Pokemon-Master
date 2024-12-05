@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.h": "cpp"
+    },
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "C_Cpp.intelliSenseEngine": "Default",
+    "C_Cpp.default.cppStandard": "c++17",
+    "code-runner.executorMap": {
+        "cpp": "g++ -std=c++17 $fileName -o $fileNameWithoutExt && ./ $fileNameWithoutExt"
+    },
+    "code-runner.runInTerminal": true,
+    "terminal.integrated.defaultProfile.osx": "bash"
+}
