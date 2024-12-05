@@ -119,7 +119,6 @@ Let user to choose the skill they want to use.
 ```
 
 - When the skill is unavailable, shows the user that it failed to perform.
-Continue Until one of the Pokemon is dead. (HP <= 0)
 #### example
 ```txt
     +-------------------------------------------------------------+
@@ -150,8 +149,9 @@ Continue Until one of the Pokemon is dead. (HP <= 0)
     |     - Count: 4(5)            |     - Count: 0(1)            |
     +------------------------------+------------------------------+
     Choose a skill (0~3): Eevee failed to perform Rain Dance.
-    
+
 ```
 
 2. **after battle**
+Continue Until one of the Pokemon is dead. (HP <= 0)
 Shows that one Pokemon defeated another.
